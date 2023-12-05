@@ -1,4 +1,6 @@
-﻿public class Program
+using System;
+
+public class Program
 {
     public static void Main()
     {
@@ -15,24 +17,24 @@
 
         Video mensagemVideo = new Video();
         mensagem.DataEnvio = DateTime.Now;
-        mensagem.Mensagem = "Boa Noite - Mensagem de vídeo";
-        mensagemVideo.Arquivo = "QueroDormir.mp4";
+        mensagemVideo.Mensagem = "Tenha um ótimo dia ouvindo esse som!";
+        mensagemVideo.Arquivo = "Racionais - Jesus Chorou.mp4";
         mensagemVideo.Formato = TiposDeArquivo.MP3;
-        mensagemVideo.Duracao = 70;
+        mensagemVideo.Duracao = 150;
 
-        //Enviando mensagem básica
-        whatsAppProfessor.EnviarMensagem("+5511964687373", mensagem);
-
-
-        //Enviando mensagem de vídeo
-        instaAluno.EnviarMensagem("+5511964687373", mensagemVideo);
+        // --- Enviando mensagem básica ---
+        whatsAppUser.EnviarMensagemBasica("+5511964687373", mensagem);
 
 
+        //--- Enviando mensagem de vídeo ---
+        InstaUser.EnviarMensagemVideo("+5511964687373", mensagemVideo);
+
+		// --- Enviando mensagem multmídia ---
         MensagemMultimidia mensagemPhelipe = mensagemVideo;
-        mensagemCaio.Mensagem = "Olá, Phelipe!";
-
+        mensagemPhelipe.Mensagem = "Olá, Phelipe! Assine nosso plano por R$21,99!";
+		
         ICanal facebook = new Facebook();
-        facebook.EnviarMensagem("usuarioDoPhelipe", mensagemPhelipe);
+        facebook.EnviarMensagemMultimidia("UserPhelipe", mensagemPhelipe);
 
         ICanal canal = Factory.Create("facebook");
     }
@@ -41,9 +43,9 @@
 // --- Metódos do programa ---
 public interface ICanal
 {
-    void EnviarMensagemBasica(string destinario, MensagemBasica mensagem);
-    void EnviarMensagemMultimidia(string destinario, MensagemMultimidia mensagem);
-    void EnviarMensagemVideo(string destinario, Video mensagem);
+    void EnviarMensagemBasica(string destinatario, MensagemBasica mensagem);
+    void EnviarMensagemMultimidia(string destinatario, MensagemMultimidia mensagem);
+    void EnviarMensagemVideo(string destinatario, Video mensagem);
 }
 
 public enum TiposDeArquivo
@@ -78,7 +80,7 @@ public abstract class CanaisMensagem : ICanal
     protected abstract string canal { get; }
 
     // --- Metódo para o envio de mensagem básica --- 
-    public void EnviarMensagemBasica(string Destinario, MensagemBasica mensagem)
+    public void EnviarMensagemBasica(string destinatario, MensagemBasica mensagem)
     {
         // --- Imprimindo a mensagem básica para o usuário ---
         Console.WriteLine("Envio da mensagem básica enviada pelo canal: " + canal);
@@ -88,8 +90,8 @@ public abstract class CanaisMensagem : ICanal
         Console.WriteLine("");
     }
 
-    // --- Método para o envio de mensagem mulímídia ---
-    public void EnviarMensagemMultimidia(string Destinario, MensagemMultimidia mensagem)
+    // --- Método para o envio de mensagem multímídia ---
+    public void EnviarMensagemMultimidia(string destinatario, MensagemMultimidia mensagem)
     {
         // --- Imprimindo a mensagem multimídia para o usuário ---
         Console.WriteLine("Envio da mensagem básica enviada pelo canal: " + canal);
@@ -109,7 +111,7 @@ public abstract class CanaisMensagem : ICanal
         Console.WriteLine("Data Envio: " + mensagem.DataEnvio);
         Console.WriteLine("Arquivo: " + mensagem.Arquivo);
         Console.WriteLine("Tipo Arquivo: " + mensagem.Formato);
-        Console.WriteLine("Duração: " + mensagem.Duracao);
+        Console.WriteLine("Duração: " + mensagem.Duracao + "min");
         Console.WriteLine("");
     }
 }
@@ -138,8 +140,8 @@ public class Facebook : CanaisMensagem, ICanal
 
 public class MensagemBasica
 {
-    public string Mensagem { get; set; }
-    public DateTime DataEnvio { get; set; }
+    public string Mensagem {get; set;}
+    public DateTime DataEnvio {get; set;}
 }
 
 public class MensagemMultimidia : MensagemBasica
@@ -150,5 +152,5 @@ public class MensagemMultimidia : MensagemBasica
 
 public class Video : MensagemMultimidia
 {
-    public int Duracao { get; set};
+    public int Duracao { get; set;}
 }
