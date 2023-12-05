@@ -8,11 +8,14 @@ public class Program
 
         ICanal whatsAppUser = new WhatsApp();
         ICanal InstaUser = new Instagram();
+		ICanal TelegramUser = new Telegram();
 
 
         MensagemBasica mensagem = new MensagemBasica();
         mensagem.DataEnvio = DateTime.Now;
-        mensagem.Mensagem = "Olá, boa noite!";
+        mensagem.Mensagem = "Olá, boa noite! Telegram é ruim. Venha para o melhor e mais seguro aplicativo de mensagens do mundo!";
+		MensagemBasica mensagemTel = new MensagemBasica();
+		mensagemTel.Mensagem = "Fake news no WhatsApp! Venha para o Telegram!!!";
 
 
         Video mensagemVideo = new Video();
@@ -24,10 +27,11 @@ public class Program
 
         // --- Enviando mensagem básica ---
         whatsAppUser.EnviarMensagemBasica("+5511964687373", mensagem);
+		TelegramUser.EnviarMensagemBasica("+5511964641515", mensagemTel);
 
 
         //--- Enviando mensagem de vídeo ---
-        InstaUser.EnviarMensagemVideo("+5511964687373", mensagemVideo);
+        InstaUser.EnviarMensagemVideo("+5511964687389", mensagemVideo);
 
 		// --- Enviando mensagem multmídia ---
         MensagemMultimidia mensagemPhelipe = mensagemVideo;
@@ -66,6 +70,8 @@ public static class Factory
                 return new WhatsApp();
             case "facebook":
                 return new Facebook();
+			case "telegram":
+				return new Telegram();
             default:
                 return null;
                 break;
